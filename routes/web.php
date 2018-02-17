@@ -11,6 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+// Route::get('/', function () {
+//     return view('layout/admin_template');
+// });
+
+Route::get('/', 'TestController@index');
