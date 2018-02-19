@@ -63,7 +63,9 @@
                                 Salas: {{ $imovel->salas }}<br>
                                 Garagem: {{ $imovel->garagem }}<br>
                             </td>
-                            <td><img class="img-fluid" style="max-width: 100px" src='https://w1online.com/wp-content/uploads/2017/07/Financiamento-Banco-do-Brasil-Casa-768x476.jpg'></td>
+                            <td>
+                            <img class="img-fluid" style="max-width: 100px" src={{ asset('uploads/'.$imovel->img_url) }} />
+                            </td>
                             <td>
                                 <a class="btn btn-primary" href="{{ route('imobiliaria.edit', $imovel->id) }}"><span class="fa fa-edit"></span></a>
                                 <form action="{{ action('ImobiliariaController@destroy', $imovel->id) }}" method="POST">

@@ -4,6 +4,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use XmlParser;
+use Storage;
 //use App\Http\Requests\imoveisRequest;
 
 use App\Imoveis;
@@ -21,31 +23,13 @@ class ImobiliariaController extends Controller {
 
     public function index()
     {
-      $string = file_get_contents('http://imob21.com.br/acc/imob21/publish/integracao.xml');
-      $xml = new SimpleXMLElement($destinationPath.$fileName, null, true);
-While the DomDocument would be:
-
-$xml = new DomDocument('1.0', 'utf-8'); // Or the right version and encoding of your xml file
-$xml->load($destinationPath.$fileName);
-      dd($string);
-      $xml = new SimpleXMLElement($string);
-
-      dd($xml);
-      foreach($xml->users->user as $item){
-          echo $item->ID.' - ';
-          echo $item->username.' - ';
-          echo $item->email.' - ';
-          echo '<br/>';
-          mysqli_query($conn, "INSERT INTO users (ID, username ,email ) VALUES (". $item->ID.", '". $item->username."', '" .$item->email."')" );
-      }
-
-        $imoveis = Imoveis::orderBy('created_at', 'desc')->get();
-        return view('index',['imoveis' => $imoveis]);
+      $imoveis = Imoveis::orderBy('created_at', 'desc')->get();
+      return view('index',['imoveis' => $imoveis]);
     }
 
     public function create()
     {
-        return view('create');
+      return view('create');
     }
 
     public function store(Request $request)
@@ -54,14 +38,27 @@ $xml->load($destinationPath.$fileName);
           'titulo' => 'required',
           'tipo' => 'required',
           'cep' => 'numeric',
+          'cidade' => 'alpha_num',
+          'estado' => 'alpha_num',
+          'bairro' => 'alpha_num',
+          'endereco' => 'alpha_num',
+          'complemento' => 'alpha_num',
           'numero' => 'numeric',
+          'preco_venda' => 'alpha_num',
+          'preco_locacao' => 'alpha_num',
+          'preco_temporada' => 'alpha_num',
           'area' => 'numeric',
           'suites' => 'numeric',
+          'dormitorios' => 'numeric',
           'banheiros' => 'numeric',
           'salas' => 'numeric',
           'garagem' => 'numeric'
         ]);
-        
+
+        $imovel['img_url'] = $imovel['numero'].'_'.$imovel['cep'].'.jpeg';
+
+        $request->file('img_url')->move(public_path("/uploads"), $imovel['numero'].'_'.$imovel['cep'].'.jpeg');
+
         Imoveis::create($imovel);
         return redirect()->route('imobiliaria.index')->with('message', 'Imovel Atualizado!');
     }
@@ -94,10 +91,15 @@ $xml->load($destinationPath.$fileName);
         $imoveis->preco_locacao = $request->preco_locacao;
         $imoveis->preco_temporada = $request->preco_temporada;
         $imoveis->area = $request->area;
+        $imoveis->dormitorios = $request->dormitorios;
         $imoveis->suites = $request->suites;
         $imoveis->banheiros = $request->banheiros;
         $imoveis->salas = $request->salas;
         $imoveis->garagem = $request->garagem;
+        
+        // $imoveis->img_url = $imoveis->numero.'_'.$imoveis->cep.'.jpeg';
+        // $request->file('img_url')->move(public_path("/uploads"), $imoveis->img_url);
+
         $imoveis->save();
 
         return redirect()->route('imobiliaria.index')->with('message', 'Imovel Atualizado!');
@@ -108,5 +110,30 @@ $xml->load($destinationPath.$fileName);
         $imoveis = imoveis::findOrFail($id);
         $imoveis->delete();
         return redirect()->route('imobiliaria.index')->with('message', 'Imovel Deletado!');
+    }
+
+    public function xml_upload()
+    {
+        
+    $xml = XmlParser::load('http://imob21.com.br/acc/imob21/publish/integracao.xml');
+
+      $user = $xml->parse([
+        'Cidade' => ['uses','Imoveis.Imovel'],
+      ]);
+
+      dd($user);
+
+      $products = $xml->getContent();
+
+      foreach($products as $product) {
+        foreach ($product as $prod) {
+          $item = $prod->CodigoImovel;
+          dd($item);
+          $item->title = $product['title'];
+          $item->save();
+        }
+
+          
+        }
     }
 }

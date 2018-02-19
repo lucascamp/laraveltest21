@@ -120,25 +120,20 @@
                     <input name="garagem" class="form-control" id="garagem" value="{{ $imovel->garagem }}">
                   </div>
 
-                  <div class="col-md-3">
-                    <label for="banheiros">Banheiros</label>
-                    <input name="banheiros" class="form-control" id="banheiros" value="{{ $imovel->banheiros }}">
-                  </div>
-
                 </div>
 
                 <br>
 
-                <div class="row">
+                <!-- <div class="row">
 
                   <div class="col-md-6">
                     <label for="img_url">Imagem do Imóvel</label>
-                    <input type="file" id="img_url">
+                    <input type="file" id="img_url" name="img_url">
 
                     <p class="help-block">Coloque a foto do ímovel acima</p>
                   </div>
                 </div>
-                
+                 -->
               </div>
 
               <div class="box-footer">

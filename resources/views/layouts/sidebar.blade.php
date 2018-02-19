@@ -20,7 +20,7 @@
                 <ul class="sidebar-menu">
                     <li class="header">Imobiliária</li>
                     <!-- Optionally, you can add icons to the links -->
-                    <li class="active"><a href="../imobiliaria"><span>Todos os Imóveis</span></a></li>
+                    <li><a href="../imobiliaria"><span>Todos os Imóveis</span></a></li>
                     <li><a href="/imobiliaria/create"><span>Adicionar Imóveis</span></a></li>
                 </ul><!-- /.sidebar-menu -->
             </section>

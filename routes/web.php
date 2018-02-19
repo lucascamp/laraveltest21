@@ -12,21 +12,8 @@
 */
 
 
-
-// Route::get('/', function () {
-//     return view('layout/admin_template');
-// });
-
-// Route::get('/', 'ImobiliariaController@index');
-// Route::get('/create', 'ImobiliariaController@create');
-// Route::post('/store', 'ImobiliariaController@store');
+Route::get('/', 'ImobiliariaController@index');
 
 Route::resource('/imobiliaria','ImobiliariaController');
 
 Auth::routes();
-
-//     Route::get('projetos/inserir', 'ProjetosController@getInserir');
-//     Route::post('projetos/inserir', 'ProjetosController@postInserir');
-//     Route::get('projetos/editar/{id}', 'ProjetosController@getEditar');
-//     Route::post('projetos/editar/{id}', 'ProjetosController@postEditar');
-//     Route::post('projetos/deletar/{id}', 'ProjetosController@postDeletar');
