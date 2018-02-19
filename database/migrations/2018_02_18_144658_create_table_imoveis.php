@@ -15,8 +15,8 @@ class CreateTableImoveis extends Migration
     {
         Schema::create('imoveis', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('titulo', 100);
-            $table->string('tipo', 15);
+            $table->string('titulo', 100)->nullable();
+            $table->string('tipo', 15)->nullable();
             $table->string('cep', 10)->nullable();
             $table->string('cidade', 40)->nullable();
             $table->string('estado', 30)->nullable();
